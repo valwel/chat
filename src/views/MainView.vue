@@ -40,7 +40,10 @@
         </ul>
       </div>
       <div class="chat__input">
-        <form @submit.prevent="addMessage" class="chat__input-wrapper">
+        <form
+          @submit.prevent="addMessage('valwel', newMessage)"
+          class="chat__input-wrapper"
+        >
           <input
             class="input"
             type="text"
@@ -59,47 +62,28 @@
 
 <script lang="js">
 import { localStorageService } from '@/api/localStorageService';
+import { messagesService } from "@/api/messagesService";
 console.log(localStorageService);
 export default {
   data() {
     return {
-      newMessage: '',
-      messages: [
-        {
-          id: "1",
-          name: "John Doe",
-          text: "Привет!",
-          timestamp: "2021-10-15T09:34:00Z",
-          avatarURL: null,
-        },
-        {
-          id: "2",
-          name: "valwel",
-          text: "Хорошо",
-          timestamp: "2021-10-15T09:34:00Z",
-          avatarURL: null,
-        },
-        {
-          id: "3",
-          name: "John Doe",
-          text: "У меня тоже все хорошо",
-          timestamp: "2021-10-15T09:34:00Z",
-          avatarURL: null,
-        },
-      ]
+      newMessage: null,
+      messages: []
     }
   },
   methods: {
-    addMessage() {
-      this.messages.push({
-        id: this.messages.length,
-        name: "valwel",
-        text: this.newMessage,
-        timestamp: new Date(),
-        avatarURL: null,
-      });
-      this.newMessage = '';
+    addMessage(name, text) {
+      messagesService.addMessage(name, text);
+      this.newMessage = null;
+      this.loadMessages();
+    },
+    loadMessages() {
+      localStorageService.loadMessages();
+      this.messages = [...messagesService.messages];
     }
+  },
+  created() {
+    this.loadMessages()
   },
 }
 </script>

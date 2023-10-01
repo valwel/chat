@@ -1,12 +1,15 @@
+import { messagesService } from "./messagesService";
+console.log(messagesService.messages);
 export const localStorageService = {
-  messages: [],
   loadMessages() {
     //загрузка сообщений из ls
+    if (localStorage.getItem("messages")) {
+      messagesService.messages = JSON.parse(localStorage.getItem("messages"));
+    }
   },
   saveMessages() {
     //запись сообщений в ls
-  },
-  addMessage() {
-    //добавление одного сообщения
+    const parsed = JSON.stringify(messagesService.messages);
+    localStorage.setItem("messages", parsed);
   },
 };
