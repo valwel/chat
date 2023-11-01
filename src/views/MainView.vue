@@ -49,16 +49,11 @@
       </div>
       <div class="chat__input">
         <form @submit.prevent="addMessage" class="chat__input-wrapper">
-          <input
-            class="input"
-            type="text"
+          <input-comp
             placeholder="Введите сообщение..."
             v-model="newMessage"
-            required
-            pattern=".{1,}"
-            autofocus
-          />
-          <button type="submit" class="button">Отправить</button>
+          ></input-comp>
+          <button-comp type="submit" class="button">Отправить</button-comp>
         </form>
       </div>
     </div>
@@ -70,11 +65,15 @@ import { localStorageService } from '@/api/localStorageService';
 import { messagesService } from "@/api/messagesService";
 import { userService } from "@/api/userService";
 import Modal from "@/components/ModalComp";
+import InputComp from "@/components/InputComp.vue";
+import ButtonComp from "@/components/ButtonComp.vue"
 
 console.log(localStorageService);
 export default {
   components: {
-    Modal
+    Modal,
+    InputComp,
+    ButtonComp
   },
   data() {
     return {
@@ -248,37 +247,34 @@ export default {
     right: 0;
     bottom: 0;
     left: 0;
-    padding: 12px 10px;
-    background-color: rgba(23, 33, 43, 1);
+    height: 53px;
+    // padding: 12px 10px;
+    // background-color: rgba(23, 33, 43, 1);
     color: #fff;
 
     .input {
-      font-size: 16px;
       border: none;
-      line-height: 1.4em;
-      outline: none;
-      color: inherit;
-      width: 100%;
-      background: none;
     }
 
     .button {
-      font-size: 15px;
-      font-weight: 500;
-      line-height: 17px;
-      letter-spacing: 0em;
-      text-align: center;
+      // font-size: 15px;
+      // font-weight: 500;
+      // line-height: 17px;
+      // letter-spacing: 0em;
+      // text-align: center;
       padding: 6px 20px;
-      background-color: rgba(81, 136, 193, 1);
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
+      margin: 10px;
+      // background-color: rgba(81, 136, 193, 1);
+      // color: #fff;
+      // border: none;
+      // border-radius: 5px;
+      // cursor: pointer;
     }
   }
 
   &__input-wrapper {
     display: flex;
+    height: 100%;
   }
 }
 
