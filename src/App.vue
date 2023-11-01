@@ -1,10 +1,20 @@
 <template>
   <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+    <!-- <router-link to="/">Home</router-link> |
+    <router-link to="/about">About</router-link> -->
   </nav>
   <router-view />
 </template>
+
+<script lang="js">
+import { userService } from "@/api/userService";
+
+export default {
+  beforeMount() {
+    userService.fetchUserFromLS();
+  },
+}
+</script>
 
 <style lang="scss">
 #app {
@@ -14,6 +24,7 @@
   text-align: center;
   color: #2c3e50;
 }
+
 * {
   margin: 0;
   padding: 0;
@@ -25,7 +36,7 @@ li {
 }
 
 nav {
-  padding: 30px;
+  // padding: 30px;
 
   a {
     font-weight: bold;

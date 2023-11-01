@@ -1,13 +1,21 @@
 <template>
   <div class="chat">
-    <ul class="chat__users">
-      <li class="chat__user">
-        <div class="avatar-wrapper">
-          <img src="" alt="" class="chat__user-avatar" />
-        </div>
-        <div class="chat__user-nickname">nickname</div>
-      </li>
-    </ul>
+    <modal :show="showModal" @close="showModal = false"></modal>
+    <div class="chat__sidebar">
+      <div class="chat__exit">
+        <button @click="showModal = true" class="chat__exit-button">
+          <img src="@/assets/exit.svg" alt="" />
+        </button>
+      </div>
+      <ul class="chat__users">
+        <li v-if="user" class="chat__user">
+          <div class="avatar-wrapper">
+            <img src="" alt="" class="chat__user-avatar" />
+          </div>
+          <div class="chat__user-nickname">{{ user.name }}</div>
+        </li>
+      </ul>
+    </div>
     <div class="chat__header">
       <div class="chat__header-container">
         <div class="chat__header-title">Чат</div>
@@ -19,13 +27,13 @@
             v-for="(message, i) in messages"
             :key="message.id"
             class="messages-list__item"
-            :class="{ 'jc-r': message.name === `${'valwel'}` }"
+            :class="{ 'jc-r': message.name === user.name }"
           >
             <div class="messages-list__item-contant">
               <div
                 v-if="i === 0 || messages[i - 1].name !== message.name"
                 class="messages-list__item-nickname"
-                :class="{ 'jc-r': message.name === `${'valwel'}` }"
+                :class="{ 'jc-r': message.name === user.name }"
               >
                 {{ message.name }}
               </div>
@@ -40,10 +48,7 @@
         </ul>
       </div>
       <div class="chat__input">
-        <form
-          @submit.prevent="addMessage('valwel', newMessage)"
-          class="chat__input-wrapper"
-        >
+        <form @submit.prevent="addMessage" class="chat__input-wrapper">
           <input
             class="input"
             type="text"
@@ -63,24 +68,36 @@
 <script lang="js">
 import { localStorageService } from '@/api/localStorageService';
 import { messagesService } from "@/api/messagesService";
+import { userService } from "@/api/userService";
+import Modal from "@/components/ModalComp";
+
 console.log(localStorageService);
 export default {
+  components: {
+    Modal
+  },
   data() {
     return {
+      showModal: false,
       newMessage: null,
-      messages: []
+      messages: [],
+      user: null,
     }
   },
   methods: {
-    addMessage(name, text) {
-      messagesService.addMessage(name, text);
+    addMessage() {
+      messagesService.addMessage(this.user.name, this.newMessage);
       this.newMessage = null;
       this.loadMessages();
     },
     loadMessages() {
-      localStorageService.loadMessages();
+      messagesService.loadMessages();
       this.messages = [...messagesService.messages];
-    }
+    },
+  },
+  beforeMount() {
+    userService.getUser();
+    this.user = userService.user;
   },
   created() {
     this.loadMessages()
@@ -92,13 +109,35 @@ export default {
 .chat {
   display: flex;
   background-color: rgba(23, 33, 43, 1);
-  max-width: 810px;
-  margin: 0 auto;
+  max-width: 100%;
+  height: 100vh;
+  position: relative;
 
-  &__users {
+  &__sidebar {
     width: 30%;
     border: 1px solid rgba(14, 22, 33, 1);
-    padding: 60px 15px;
+  }
+
+  &__exit {
+    height: 56px;
+    display: flex;
+    margin-left: 15px;
+    align-items: center;
+  }
+
+  &__exit-button {
+    width: 35px;
+    height: 35px;
+    appearance: none;
+    border: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+  }
+
+  &__users {
+    padding: 0 15px;
   }
 
   &__user {
@@ -124,6 +163,7 @@ export default {
   &__header {
     position: relative;
     width: 100%;
+    height: 100vh;
   }
 
   &__header-container {
@@ -150,7 +190,11 @@ export default {
   }
 
   &__window {
-    height: 600px;
+    position: absolute;
+    left: 0;
+    top: 56px;
+    right: 0;
+    bottom: 53px;
     background-color: rgba(14, 22, 33, 1);
     display: flex;
     flex-direction: column;
@@ -200,10 +244,10 @@ export default {
   }
 
   &__input {
-    // position: absolute;
-    // right: 0;
-    // bottom: 0;
-    // left: 0;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
     padding: 12px 10px;
     background-color: rgba(23, 33, 43, 1);
     color: #fff;
@@ -239,11 +283,8 @@ export default {
 }
 
 .messages-list {
-  // height: 100%;
-  // max-height: 100%;
   display: flex;
   flex-direction: column;
-  // overflow: auto;
   justify-content: end;
   flex-grow: 1;
 

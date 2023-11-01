@@ -1,34 +1,73 @@
 <template>
-  <div class="login">
-    <div class="login__logo"><img src="../assets/login_logo.svg" alt="" /></div>
-    <h1 class="login__title">Авторизация</h1>
-    <h2 class="login__subtitle">
-      Введите пожалуйста свой ник для дальнейшей авторизации
-    </h2>
-    <input
-      class="login__input"
-      type="text"
-      name=""
-      id=""
-      placeholder="Введите свой ник"
-    />
-    <button class="login__button">войти</button>
+  <div class="container">
+    <div class="login">
+      <div class="login__logo">
+        <img src="../assets/login_logo.svg" alt="" />
+      </div>
+      <h1 class="login__title">Авторизация</h1>
+      <h2 class="login__subtitle">
+        Введите пожалуйста свой ник для дальнейшей авторизации
+      </h2>
+      <form @submit.prevent="login">
+        <input
+          class="login__input"
+          type="text"
+          name=""
+          id=""
+          placeholder="Введите свой ник"
+          v-model="name"
+          required
+          pattern=".{1,}"
+          autofocus
+        />
+        <button type="submit" class="login__button">войти</button>
+      </form>
+      <!-- <button type="submit" class="login__button">войти</button> -->
+    </div>
   </div>
 </template>
 
+<script lang="js">
+import { userService } from "@/api/userService"
+export default {
+  data() {
+    return {
+      name: '',
+    }
+  },
+  methods: {
+    login() {
+      userService.login(this.name);
+      this.$router.push('/about');
+    },
+  },
+  // created() {
+  // }
+}
+</script>
+
 <style lang="scss" scoped>
+.container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  background-color: rgba(35, 47, 61, 1);
+}
 .login {
   max-width: 452px;
   padding: 39px 77px 50px 77px;
   background-color: rgba(23, 33, 43, 1);
   color: rgba(255, 255, 255, 1);
   margin: auto;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 
   &__logo {
     max-width: 139px;
     margin: 0 auto;
     background-color: rgba(35, 47, 61, 1);
     border-radius: 50%;
+
     img {
       padding: 37px 27px;
     }

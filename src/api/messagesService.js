@@ -1,23 +1,8 @@
 import { localStorageService } from "./localStorageService";
 export const messagesService = {
-  messages: [
-    {
-      id: "1",
-      name: "John Doe",
-      text: "Привет!",
-      timestamp: "2021-10-15T09:34:00Z",
-      avatarURL: null,
-    },
-    {
-      id: "2",
-      name: "John Doe",
-      text: "У меня тоже все хорошо",
-      timestamp: "2021-10-15T09:34:00Z",
-      avatarURL: null,
-    },
-  ],
+  key: "messages",
+  messages: [],
   addMessage(name, text) {
-    //добавление одного сообщения
     this.messages.push({
       id: this.messages.length,
       name,
@@ -25,6 +10,9 @@ export const messagesService = {
       timestamp: new Date(),
       avatarURL: null,
     });
-    localStorageService.saveMessages();
+    localStorageService.setItem(this.key, this.messages);
+  },
+  loadMessages() {
+    this.messages = localStorageService.getItem(this.key) || [];
   },
 };
