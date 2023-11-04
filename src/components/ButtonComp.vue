@@ -5,10 +5,6 @@
 </template>
 <style lang="scss" scoped>
 .button {
-  // margin-top: 42px;
-  // display: flex;
-  // justify-content: center;
-  // align-items: center;
   font-size: 15px;
   font-weight: 500;
   line-height: 17px;

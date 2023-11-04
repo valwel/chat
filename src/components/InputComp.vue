@@ -20,7 +20,6 @@ export default {
 <style lang="scss" scoped>
 .input {
   font-size: 16px;
-  // margin-top: 37px;
   padding: 13px 8px;
   border: none;
   border-bottom: 1px solid rgba(70, 84, 97, 1);

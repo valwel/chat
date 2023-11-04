@@ -25,21 +25,22 @@ import { userService } from "@/api/userService";
 import InputComp from "@/components/InputComp.vue";
 import ButtonComp from "@/components/ButtonComp.vue";
 export default {
-    data() {
-        return {
-            name: '',
-        };
+  components: {
+    InputComp,
+    ButtonComp,
+  },
+  data() {
+    return {
+      name: '',
+    };
+  },
+  methods: {
+    login() {
+      userService.login(this.name);
+      this.$router.push('/about');
     },
-    methods: {
-        login() {
-            userService.login(this.name);
-            this.$router.push('/about');
-        },
-    },
-    components: {
-      InputComp,
-      ButtonComp,
-     }
+  },
+
 }
 </script>
 
@@ -51,6 +52,7 @@ export default {
   justify-content: center;
   background-color: rgba(35, 47, 61, 1);
 }
+
 .login {
   max-width: 452px;
   padding: 39px 77px 50px 77px;
@@ -90,31 +92,11 @@ export default {
   }
 
   &__input {
-    // font-size: 16px;
     margin-top: 37px;
-    // padding: 0 8px 13px 8px;
-    // border: none;
-    // border-bottom: 1px solid rgba(70, 84, 97, 1);
-    // line-height: 1.4em;
-    // outline: none;
-    // color: inherit;
-    // width: 100%;
-    // background: none;
   }
 
   &__button {
     margin-top: 42px;
-    // font-size: 15px;
-    // font-weight: 500;
-    // line-height: 17px;
-    // letter-spacing: 0em;
-    // text-align: center;
-    // padding: 13px 40px;
-    // background-color: rgba(81, 136, 193, 1);
-    // color: #fff;
-    // border: none;
-    // border-radius: 5px;
-    // cursor: pointer;
   }
 }
 </style>
