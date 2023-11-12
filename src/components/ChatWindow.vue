@@ -46,6 +46,9 @@ export default {
     display: flex;
     flex-direction: column;
     overflow-y: auto;
+    @media (max-width: 600px) {
+      left: -30%;
+    }
   }
 
   &__window-unit {

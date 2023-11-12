@@ -57,6 +57,9 @@ export default {
     left: 0;
     height: 53px;
     color: #fff;
+    @media (max-width: 600px) {
+      left: -30%;
+    }
 
     .input {
       border: none;

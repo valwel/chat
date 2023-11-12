@@ -37,6 +37,11 @@ export default {
   &__sidebar {
     width: 30%;
     border: 1px solid rgba(14, 22, 33, 1);
+    @media (max-width: 600px) {
+      height: 56px;
+      border: none;
+      border-right: 1px solid rgba(14, 22, 33, 1);
+    }
   }
 
   &__exit {
@@ -44,6 +49,10 @@ export default {
     display: flex;
     margin-left: 15px;
     align-items: center;
+    @media (max-width: 600px) {
+      justify-content: center;
+      margin-left: 0;
+    }
   }
 
   &__exit-button {
@@ -59,6 +68,9 @@ export default {
 
   &__users {
     padding: 0 15px;
+    @media (max-width: 600px) {
+      display: none;
+    }
   }
 
   &__user {
