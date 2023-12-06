@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import LoginView from "../views/LoginView.vue";
 import MainView from "../views/MainView.vue";
+import { userService } from "@/api/userService";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -9,9 +10,14 @@ const routes: Array<RouteRecordRaw> = [
     component: LoginView,
   },
   {
-    path: "/about",
-    name: "about",
+    path: "/main",
+    name: "main",
     component: MainView,
+    beforeEnter: () => {
+      userService.fetchUserFromLS();
+      const user = userService.getUser();
+      return !!user || { name: "home" };
+    },
   },
 ];
 

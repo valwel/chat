@@ -1,9 +1,10 @@
 import { localStorageService } from "./localStorageService";
+import { IUserService } from "@/models/userService.interface";
 
-export const userService = {
+export const userService: IUserService = {
   key: "user",
   user: null,
-  login(name) {
+  login(name: string) {
     this.user = {
       name,
     };

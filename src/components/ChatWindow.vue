@@ -1,6 +1,6 @@
 <template>
   <div class="chat__window">
-    <ul class="messages-list">
+    <ul v-if="messages" class="messages-list">
       <li
         v-for="(message, i) in messages"
         :key="message.id"
@@ -26,13 +26,14 @@
     </ul>
   </div>
 </template>
-<script lang="js">
-export default {
-  props: {
-    messages: Array,
-    user: Object
-  },
-}
+<script setup lang="ts">
+import { defineProps } from "vue";
+import { IMessage } from "@/models/messagesService.interface";
+import { IUser } from "@/models/userService.interface";
+defineProps<{
+  messages: IMessage[];
+  user: IUser;
+}>();
 </script>
 <style lang="scss" scoped>
 .chat {
@@ -46,12 +47,10 @@ export default {
     display: flex;
     flex-direction: column;
     overflow-y: auto;
+
     @media (max-width: 600px) {
       left: -30%;
     }
-  }
-
-  &__window-unit {
   }
 
   &__window-nickname {
@@ -60,12 +59,6 @@ export default {
     font-weight: 500;
     line-height: 14px;
     letter-spacing: 0em;
-  }
-
-  &__window-wrapper {
-  }
-
-  &__window-messages {
   }
 
   &__window-message {
@@ -79,10 +72,12 @@ export default {
     margin: 7px;
     max-width: 50%;
   }
+
   &__chat__window-message-text {
     width: 100%;
   }
 }
+
 .messages-list {
   display: flex;
   flex-direction: column;
@@ -141,6 +136,7 @@ export default {
     justify-content: end;
   }
 }
+
 .jc-r {
   justify-content: right;
 }

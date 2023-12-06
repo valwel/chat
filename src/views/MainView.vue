@@ -1,45 +1,39 @@
 <template>
   <div class="chat">
     <sidebar-comp :user="user"></sidebar-comp>
-    <chat-comp @addMessage="addMessage" :messages="messages" :user="user" />
+    <chat-comp
+      v-if="user"
+      @onAddMessage="loadMessages"
+      :messages="messages"
+      :user="user"
+    />
   </div>
 </template>
 
-<script lang="js">
+<script setup lang="ts">
 import { messagesService } from "@/api/messagesService";
 import { userService } from "@/api/userService";
-import SidebarComp from '@/components/SidebarComp.vue';
+import SidebarComp from "@/components/SidebarComp.vue";
 import ChatComp from "@/components/ChatComp.vue";
+import { onBeforeMount, ref } from "vue";
+import { IUser } from "@/models/userService.interface";
+import { IMessage } from "@/models/messagesService.interface";
 
-export default {
-  components: {
-    SidebarComp,
-    ChatComp
-},
-  data() {
-    return {
-      messages: [],
-      user: null,
-    }
-  },
-  methods: {
-    addMessage(newMessage) {
-      messagesService.addMessage(this.user.name, newMessage);
-      this.loadMessages();
-    },
-    loadMessages() {
-      messagesService.loadMessages();
-      this.messages = [...messagesService.messages];
-    },
-  },
-  beforeMount() {
-    userService.getUser();
-    this.user = userService.user;
-  },
-  created() {
-    this.loadMessages()
-  },
+const user = ref<IUser>();
+const messages = ref<IMessage[]>([]);
+
+loadMessages();
+function loadMessages() {
+  messagesService.loadMessages();
+  messages.value = [...messagesService.messages];
 }
+onBeforeMount(() => {
+  userService.getUser();
+  if (!userService.user) {
+    return;
+  }
+  user.value = userService.user;
+});
 </script>
 
 <style lang="scss" scoped>

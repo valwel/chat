@@ -13,34 +13,33 @@
     </div>
   </div>
 </template>
-<script lang="js">
+<script setup lang="ts">
 import InputComp from "@/components/InputComp.vue";
 import ButtonComp from "@/components/ButtonComp.vue";
 import ChatHeader from "./ChatHeader.vue";
 import ChatWindow from "./ChatWindow.vue";
+import { ref, defineProps, watch, defineEmits } from "vue";
+import { IUser } from "@/models/userService.interface";
+import { IMessage } from "@/models/messagesService.interface";
+import { messagesService } from "@/api/messagesService";
 
-export default {
-  components: {
-    InputComp,
-    ButtonComp,
-    ChatHeader,
-    ChatWindow
-},
-  data() {
-    return {
-      newMessage: null,
-    };
-  },
-  props: {
-    messages: {type: Array, default: () => []},
-    user: {type: Object, default: () => ({})}
-  },
-  methods: {
-    addMessage() {
-      this.$emit('addMessage', this.newMessage);
-      this.newMessage = null;
-    },
-  },
+const newMessage = ref<string>("");
+watch(newMessage, (newValue) => console.log(newValue));
+const props = defineProps<{
+  messages: IMessage[];
+  user: IUser;
+}>();
+
+const emit = defineEmits<{
+  (e: "onAddMessage"): void;
+}>();
+function addMessage() {
+  if (!newMessage.value) {
+    return;
+  }
+  messagesService.addMessage(props.user.name, newMessage.value);
+  emit("onAddMessage");
+  newMessage.value = "";
 }
 </script>
 <style lang="scss" scoped>

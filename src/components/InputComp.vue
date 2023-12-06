@@ -7,15 +7,22 @@
     required
     pattern=".{1,}"
     autofocus
-    :value="modelValue"
-    @input="$emit('update:modelValue', $event.target.value)"
+    v-model="localValue"
   />
 </template>
-<script lang="js">
-export default {
-  props: ['modelValue'],
-  emits: ['update:modelValue'],
-}
+<script setup lang="ts">
+import { defineProps, defineEmits, computed } from "vue";
+const props = defineProps<{
+  modelValue: string;
+}>();
+
+const emit = defineEmits<{
+  (e: "update:modelValue", value: string): void;
+}>();
+const localValue = computed({
+  get: () => props.modelValue,
+  set: (value) => emit("update:modelValue", value),
+});
 </script>
 <style lang="scss" scoped>
 .input {

@@ -1,8 +1,9 @@
 import { localStorageService } from "./localStorageService";
-export const messagesService = {
+import { IMessagesService } from "@/models/messagesService.interface";
+export const messagesService: IMessagesService = {
   key: "messages",
   messages: [],
-  addMessage(name, text) {
+  addMessage(name: string, text: string) {
     this.messages.push({
       id: this.messages.length,
       name,

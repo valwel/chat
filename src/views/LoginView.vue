@@ -20,27 +20,19 @@
   </div>
 </template>
 
-<script lang="js">
+<script setup lang="ts">
 import { userService } from "@/api/userService";
-import InputComp from "@/components/InputComp.vue";
 import ButtonComp from "@/components/ButtonComp.vue";
-export default {
-  components: {
-    InputComp,
-    ButtonComp,
-  },
-  data() {
-    return {
-      name: '',
-    };
-  },
-  methods: {
-    login() {
-      userService.login(this.name);
-      this.$router.push('/about');
-    },
-  },
-
+import InputComp from "@/components/InputComp.vue";
+import router from "@/router";
+import { ref } from "vue";
+const name = ref<string>("");
+function login() {
+  if (!name.value) {
+    return;
+  }
+  userService.login(name.value);
+  router.push("/main");
 }
 </script>
 
